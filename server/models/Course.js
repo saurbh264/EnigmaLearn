@@ -29,17 +29,17 @@ const courseSchema = new mongoose.Schema({
       ref: "RatingandReviews",
     },
   ],
-  prices: {
+  price: {
     type: Number,
   },
   thumbnail: {
     type: String,
   },
-  tags: {
+  tag: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tag",
   },
-  studentEnrolled: [
+  studentsEnrolled: [
     {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
