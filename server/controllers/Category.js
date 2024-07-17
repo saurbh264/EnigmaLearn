@@ -1,6 +1,6 @@
-const Tags = require("../models/Tags");
+const category = require("../models/Category");
 
-exports.createTag = async (req, res) => {
+exports.createCategory = async (req, res) => {
   try {
     // fetch data
     const { name, description } = req.body;
@@ -13,42 +13,42 @@ exports.createTag = async (req, res) => {
       });
     }
     // create entry in db
-    const newTag = Tags.create({
+    const newCategory = category.create({
       name: name,
       description: description,
     });
     return res.status(200).json({
       sucess: true,
-      response: "Tag Created Successfully",
+      response: "Category Created Successfully",
     });
   } catch (err) {
-    console.log("Can't create tag -", err.message);
+    console.log("Can't create Category -", err.message);
     res.status(500).json({
       success: false,
-      response: "Encountered an Error while creating tag",
+      response: "Encountered an Error while creating Category",
     });
   }
 };
 
-exports.showAllTags = async (req, res) => {
+exports.showAllcategory = async (req, res) => {
   try {
-    const tags = await Tags.find(
+    const Category = await category.find(
       {},
       {
         name: true,
         description: true,
       }
     );
-    //It means on fetching all the tags I want name and description for all the tags.
+    //It means on fetching all the category I want name and description for all the category.
     return res.status(200).json({
       sucess: true,
-      message: "Tag Fetched Successfully",
-      response: tags,
+      message: "Category Fetched Successfully",
+      response: Category,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      response: "Encountered an Error while fetching tags.",
+      response: "Encountered an Error while fetching category.",
     });
   }
 };

@@ -1,7 +1,7 @@
 const Course = require("../models/Course");
-const Tag = require("../models/Tags");
+const Tag = require("../models/Category");
 const User = require("../models/User");
-const { imageUpload } = require("../utils/imageUpload");
+const { fileUpload } = require("../utils/fileUpload");
 require("dotenv").config();
 
 exports.createCourse = async (req, res) => {
@@ -47,7 +47,7 @@ exports.createCourse = async (req, res) => {
     }
 
     // Upload to Cloudinary
-    const thumbnailImage = await imageUpload(
+    const thumbnailImage = await fileUpload(
       thumbnail,
       process.env.FOLDER_NAME
     );
