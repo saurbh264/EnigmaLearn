@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "cloudinary": "^2.2.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express-fileupload": "^1.5.1",
     "razorpay": "^2.9.4"
   }
 }
