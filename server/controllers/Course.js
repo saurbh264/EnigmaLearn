@@ -47,10 +47,7 @@ exports.createCourse = async (req, res) => {
     }
 
     // Upload to Cloudinary
-    const thumbnailImage = await fileUpload(
-      thumbnail,
-      process.env.FOLDER_NAME
-    );
+    const thumbnailImage = await fileUpload(thumbnail, process.env.FOLDER_NAME);
     const courseDetails = await Course.create({
       courseName,
       courseDescription,
@@ -106,7 +103,9 @@ exports.getAllCourses = async (req, res) => {
         ratingAndReviews: true,
         studentsEnrolled: true,
       }
-    ).populate("instructor").exec();
+    )
+      .populate("instructor")
+      .exec();
     res.status(200).json({
       success: true,
       response: "All Courses Fetched Successfully",
@@ -116,7 +115,47 @@ exports.getAllCourses = async (req, res) => {
     res.status(500).json({
       success: false,
       response: "Encountered an Error while fetching course",
-      error: err.message
+      error: err.message,
     });
+  }
+};
+
+// getCourse Details
+exports.getCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const CourseDetails = await Course.findById(courseId).populate({
+      path: "instructor",
+      populate: {
+        path: "additionalDetails",
+      }
+        .populate("category")
+        .populate({
+          path: "courseContent",
+          populate: {
+            path: "subSection",
+          },
+        })
+        .populate("ratingAndReviews")
+        .exec(),
+    });
+    if (!CourseDetails) {
+      return res.status(400).json({
+        success: false,
+        response: "No Such Course Exists",
+      });
+    }
+    return res.status(200).json({
+        success:true,
+        response:"Course Details Fetched Successfully.",
+        data:CourseDetails
+      })
+    
+  } catch (err) {
+    return res.status(500).json({
+        success:false,
+        response:"Error Fetching Course Details.",
+        error:err.message
+    })
   }
 };

@@ -1,4 +1,5 @@
-const category = require("../models/Category");
+const Category = require("../models/Category");
+const Category = require("../models/Category");
 
 exports.createCategory = async (req, res) => {
   try {
@@ -13,7 +14,7 @@ exports.createCategory = async (req, res) => {
       });
     }
     // create entry in db
-    const newCategory = category.create({
+    const newCategory = Category.create({
       name: name,
       description: description,
     });
@@ -32,7 +33,7 @@ exports.createCategory = async (req, res) => {
 
 exports.showAllcategory = async (req, res) => {
   try {
-    const Category = await category.find(
+    const Category = await Category.find(
       {},
       {
         name: true,
@@ -49,6 +50,55 @@ exports.showAllcategory = async (req, res) => {
     res.status(500).json({
       success: false,
       response: "Encountered an Error while fetching category.",
+    });
+  }
+};
+
+//category page details
+exports.categoryPageDetails = async (req, res) => {
+  try {
+    // get categoryId
+    const { categoryId } = req.body;
+    // get courses for specified categoryId
+    const selectedCategory = await Category.findById(categoryId)
+      .populate("courses")
+      .exec();
+    // validation
+    if (!validation) {
+      return res.status(404).json({
+        success: false,
+        response: "No Such Category Exist.",
+      });
+    }
+    // get courses for different categories
+    const differentCategories = await Category.find({
+      _id: { $ne: categoryId },
+    })
+      .populate("courses")
+      .exec();
+
+    // get top selling courses
+    const allCategories = await Category.find().populate("courses").exec();
+    const allCourses = allCategories.flatMap((category) => category.courses);
+    const mostSellingCourses = allCourses
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, 10);
+
+    // send response
+    return res.status(200).json({
+      sucess: true,
+      message: "Category Fetched Successfully",
+      response: {
+        selectedCategory,
+        differentCategories,
+        mostSellingCourses,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      response: "Error Fetching Category Page Details",
+      error: err.message,
     });
   }
 };
