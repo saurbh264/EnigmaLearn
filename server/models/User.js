@@ -19,9 +19,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  confirmpassword: {
+  confirmPassword: {
     type: String,
-    required: true,
   },
   accountType: {
     type: String,
@@ -43,7 +42,7 @@ const userSchema = new mongoose.Schema({
       ref: "Courses",
     },
   ],
-  images: {
+  image: {
     type: String,
   },
   courseProgress: [

@@ -43,8 +43,8 @@ exports.isStudent = async (req, res, next) => {
         success: false,
         response: "You're not authorised to access Student Routes.",
       });
-      next();
     }
+    next();
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({
@@ -63,8 +63,8 @@ exports.isInstructor = async (req, res, next) => {
         success: false,
         response: "You're not authorised to access Instructor Routes.",
       });
-      next();
     }
+    next();
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({
@@ -82,8 +82,8 @@ exports.isAdmin = async (req, res, next) => {
         success: false,
         response: "You're not authorised to access Admin Routes.",
       });
-      next();
     }
+    next();
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({

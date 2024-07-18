@@ -3,7 +3,7 @@ const OTP = require("../models/OTP");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const profile = require("../models/Profile");
+const Profile = require("../models/Profile");
 require("dotenv").config();
 
 // Send OTP
@@ -28,7 +28,7 @@ exports.sendotp = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    let result = OTP.findOne({ otp: otp });
+    let result = await OTP.findOne({ otp: otp });
     // This is not so good approach because we are ensuring the OTP is not repeated,using while loop
     // A better approach is to find a library which ensured not repeating OTP
 
@@ -104,11 +104,10 @@ exports.signup = async (req, res) => {
     }
 
     // find the most recent OTP
-    const recentOTP = await otp
-      .findOne({ email })
+    const recentOTP = await OTP.findOne({ email })
       .sort({ createdAt: -1 })
       .limit(1);
-
+    console.log(recentOTP)
     // Validate the OTP
     if (recentOTP.length == 0) {
       return res.status(403).json({
@@ -126,7 +125,7 @@ exports.signup = async (req, res) => {
 
     // Create Entry in DB.
     // Since we want to link profile to user so we have to create an entry of profile
-    const profileDetails = await profile.create({
+    const profileDetails = await Profile.create({
       gender: null,
       about: null,
       dateofbirth: null,
@@ -171,7 +170,7 @@ exports.login = async (req, res) => {
     }
 
     //check if the user is registered
-    const existingUser = await user
+    let existingUser = await user
       .findOne({ email })
       .populate("additionalDetails");
     if (!existingUser) {
@@ -182,18 +181,21 @@ exports.login = async (req, res) => {
     }
 
     // Check if the passwords match
-    if (bcrypt.compare(password, existingUser.password)) {
+    console.log(password)
+    console.log(existingUser.password)
+    if (await bcrypt.compare(password, existingUser.password)) {
       // Create a JWT Token for the user
       const payload = {
-        email: user.email,
-        id: user._id,
-        accountType: user.accountType,
+        email: existingUser.email,
+        id: existingUser._id,
+        accountType: existingUser.accountType,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "2h",
       });
-      user.token = token;
-      user.password = undefined;
+      existingUser = existingUser.toObject();
+      existingUser.token = token;
+      existingUser.password = undefined;
 
       // Create Cookie and Send Response
       const options = {

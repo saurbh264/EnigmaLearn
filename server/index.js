@@ -14,7 +14,7 @@ const courseRoutes = require("./routes/Course");
 const contactUsRoute = require("./routes/Contact");
 
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -41,9 +41,9 @@ app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
 
 app.get("/", (req, res) => {
-  return res.send("<h1>Hello ! Welcome to EnigmaLearn</h1>");
+  res.send("<h1>Hello ! Welcome to EnigmaLearn</h1>");
 });
 
 app.listen(PORT, () => {
-  console.log("Your App Started at ", PORT);
+  console.log("Your App Started at ",PORT);
 });

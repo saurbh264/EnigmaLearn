@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 // Reset Password Token
 exports.resetPasswordToken = async (req, res) => {
   try {
@@ -59,7 +60,7 @@ exports.resetPassword = async (req, res) => {
     const { password, confirmPassword, token } = req.body;
     // If you're wondering we can get token using req.params so why the hell we're getting it using
     // req.body cause we'll send this in body when we submit on frontend
-
+    console.log(token)
     // validate password
     if (!password || !confirmPassword) {
       return res.status(403).json({
@@ -94,8 +95,8 @@ exports.resetPassword = async (req, res) => {
       });
     }
     //hash the password
-    const newPass = bcrypt.hash(password, 10);
-    const updatedUser = await User.findByIdAndUpdate(
+    const newPass = await bcrypt.hash(password, 10);
+    const updatedUser = await User.findOneAndUpdate(
       { token: token },
       { password: newPass },
       { new: true }
@@ -109,6 +110,7 @@ exports.resetPassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       response: "Somthing went wrong while resetting your password.",
+      error:err.message,
     });
   }
 };

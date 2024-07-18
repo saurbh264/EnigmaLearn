@@ -6,7 +6,7 @@ const profileSchema = new mongoose.Schema({
     enum: ["Male", "Female", "Others"],
   },
   dateofbirth: {
-    type: Date,
+    type: String,
   },
   about: {
     type: String,
@@ -18,4 +18,4 @@ const profileSchema = new mongoose.Schema({
   },
 });
 
-module.exports("Profile",profileSchema)
+module.exports = mongoose.model("Profile",profileSchema)

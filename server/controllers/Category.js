@@ -1,5 +1,4 @@
 const Category = require("../models/Category");
-const Category = require("../models/Category");
 
 exports.createCategory = async (req, res) => {
   try {
@@ -31,9 +30,9 @@ exports.createCategory = async (req, res) => {
   }
 };
 
-exports.showAllcategory = async (req, res) => {
+exports.showAllCategories = async (req, res) => {
   try {
-    const Category = await Category.find(
+    const category = await Category.find(
       {},
       {
         name: true,
@@ -44,12 +43,13 @@ exports.showAllcategory = async (req, res) => {
     return res.status(200).json({
       sucess: true,
       message: "Category Fetched Successfully",
-      response: Category,
+      response: category,
     });
   } catch (err) {
     res.status(500).json({
       success: false,
       response: "Encountered an Error while fetching category.",
+      error:err.message
     });
   }
 };

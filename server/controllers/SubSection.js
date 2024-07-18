@@ -1,6 +1,6 @@
 const SubSection = require("../models/SubSection");
 const section = require("../models/Section");
-const fileUpload = require("../utils/fileUpload");
+const {fileUpload} = require("../utils/fileUpload");
 require("dotenv").config();
 
 exports.createSubSection = async (req, res) => {
@@ -75,7 +75,7 @@ exports.updateSubSection = async (req, res) => {
   }
 };
 
-exports.deleteSection = async (req, res) => {
+exports.deleteSubSection = async (req, res) => {
   try {
     // fetch id - you may get something like api/:id so we can fetch using params
     const { subsectionId } = req.params;

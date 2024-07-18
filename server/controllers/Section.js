@@ -13,13 +13,14 @@ exports.createSection = async (req, res) => {
     const sectiondetails = await Section.create({
       sectionName: sectionName,
     });
-    let coursedetails = await Course.findById({ courseId });
+    let coursedetails = await Course.findById(courseId);
     if (!coursedetails) {
       return res.status(401).json({
         success: false,
         response: "No such course exists",
       });
     }
+
     coursedetails = await Course.findOneAndUpdate(
       { _id: courseId },
       {
@@ -51,7 +52,7 @@ exports.updateSection = async (req, res) => {
         response: "Please fill the details carefully",
       });
     }
-    let coursedetails = await Course.findByIdandUpdate(
+    let sectiondetails = await Section.findByIdAndUpdate(
       sectionId,
       { sectionName },
       { new: true }
@@ -72,17 +73,22 @@ exports.updateSection = async (req, res) => {
 exports.deleteSection = async (req, res) => {
   try {
     // fetch id - you may get something like api/:id so we can fetch using params
-    const { sectionId } = req.params;
+    const { sectionId, courseId } = req.body;
     if (!Section.findById(sectionId)) {
       return res.status(401).json({
         sucess: false,
         response: "No such section exists",
       });
     }
+    await Course.findByIdAndUpdate(courseId, {
+      $pull: {
+        courseContent: sectionId,
+      },
+    });
     await Section.findByIdAndDelete(sectionId);
     res.status(200).json({
       success: true,
-      response: "Section Created Successfully",
+      response: "Section Deleted Successfully",
     });
   } catch (err) {
     return res.status(500).json({
