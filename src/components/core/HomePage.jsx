@@ -2,9 +2,12 @@ import SectionOne from "./sections/SectionOne";
 import SectionTwo from "./sections/SectionTwo";
 import CodeBlocks from "./sections/CodeBlocks";
 import { FaArrowRight } from "react-icons/fa";
+import TimelineSection from "./sections/TimelineSection";
+import Footer from "./sections/Footer";
+import InsturctorSection from "./sections/InsturctorSection";
 const HomePage = () => {
   return (
-    <div className="py-16 relative min-h-screen">
+    <div className="pt-16 relative min-h-screen">
       <SectionOne></SectionOne>
       <SectionTwo></SectionTwo>
       <CodeBlocks
@@ -48,7 +51,7 @@ const HomePage = () => {
           <div className="text-4xl font-semibold mt-2">
             Start <span className="span1">Coding </span>
             <br />
-            <span className="span2">in Seconds</span>
+            <span className="span1">in Seconds</span>
           </div>
         }
         subheading={
@@ -77,6 +80,9 @@ const HomePage = () => {
           "bg-[linear-gradient(118.19deg,_#1FA2FF_-3.62%,_#12D8FA_50.44%,_#A6FFCB_104.51%)]"
         }
       ></CodeBlocks>
+      <TimelineSection></TimelineSection>
+      <InsturctorSection></InsturctorSection>
+      <Footer></Footer>
     </div>
   );
 };

@@ -14,7 +14,7 @@ const CodeBlocks = ({
 }) => {
   return (
     
-    <Tilt glareEnable={true} glareMaxOpacity={0.8} glareColor="lightblue" glarePosition="all" glareBorderRadius="20px" className={`${position} w-3/4 mx-auto my-[8rem] gap-8 rounded-xl py-16 px-8`}>
+    <Tilt glareEnable={true} glareMaxOpacity={0.8} glareColor="lightblue" glarePosition="all" glareBorderRadius="20px" className={`${position} w-3/4 mx-auto my-[4rem] gap-12 rounded-xl py-16 px-8 overflow-x-hidden`}>
       <div className="w-[55%] text-white font-inter flex flex-col gap-8 text-xl">
         {heading}
         {subheading}
@@ -58,7 +58,7 @@ const CodeBlocks = ({
               display: "block",
             }}
           />
-          <div className={`absolute top-0 left-0 -z-10 w-[350px] h-[320px] opacity-20 ${backgroundGradient} -rotate-45 rounded-full blur-lg`}></div>
+          <div className={`absolute top-0 left-0 -z-10 w-[350px] h-[320px] opacity-20 ${backgroundGradient}  rounded-full blur-lg`}></div>
         </div>
       </div>
     </Tilt>
